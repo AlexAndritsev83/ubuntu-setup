@@ -2,27 +2,31 @@
 
 echo "[ZSH] Installing..."
 
-if command -v zsh &> /dev/null; then
-  echo "Zsh already installed, skipping"
-  exit 0
+# якщо вже є oh-my-zsh — пропускаємо
+if [[ -d "$HOME/.oh-my-zsh" ]]; then
+    echo "[ZSH] Oh My Zsh already installed, skipping"
+    exit 0
 fi
 
-sudo apt install -y zsh fonts-powerline
+sudo apt install -y zsh fonts-powerline curl git
 
+# встановлення oh-my-zsh
 RUNZSH=no CHSH=no sh -c \
 "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions || true
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting || true
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+    ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions || true
 
-# safe config update
-if [[ -f ~/.zshrc ]]; then
-  if ! grep -q "zsh-autosuggestions" ~/.zshrc; then
-    sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
-  fi
+git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+    ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting || true
 
-  sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc || true
-fi
+# config
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 
-echo "⚠️ Run manually if needed: chsh -s $(which zsh)"
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc
+
+# default shell
+chsh -s $(which zsh)
+
+echo "[ZSH] Done"
