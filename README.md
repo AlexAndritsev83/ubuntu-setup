@@ -1,6 +1,6 @@
 # Ubuntu Setup
 
-## Run:
+## Run
 
 ```bash
 git clone https://github.com/AlexAndritsev83/ubuntu-setup.git
