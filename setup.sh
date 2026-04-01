@@ -26,6 +26,7 @@ run_module 20_docker.sh
 run_module 30_hibernate.sh
 run_module 40_dev.sh
 run_module 50_zsh.sh
+run_module 60_theme.sh
 
 echo ""
 echo "========================="
