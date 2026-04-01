@@ -124,7 +124,7 @@ echo "[THEME] Applying p10k config..."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-P10K_SOURCE="$PROJECT_ROOT/templates/.p10k.zsh"
+P10K_SOURCE="$PROJECT_ROOT/templates/p10k.zsh"
 P10K_TARGET="$HOME/.p10k.zsh"
 
 if [ -f "$P10K_SOURCE" ]; then
