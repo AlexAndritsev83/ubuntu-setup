@@ -1,38 +1,52 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
-LOG_FILE="setup.log"
-
-exec > >(tee -a "$LOG_FILE") 2>&1
-
 echo "🚀 Ubuntu Setup Starting..."
-
-# check sudo
-if ! sudo -v; then
-  echo "❌ This script requires sudo privileges"
-  exit 1
-fi
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+FAILED=()
+SUCCESS=()
+
 run_module() {
-  local module="$1"
+    local module=$1
+    echo "➡️ Running $module..."
 
-  echo "➡️ Running $module"
-
-  if [[ -f "$DIR/modules/$module" ]]; then
-    bash "$DIR/modules/$module"
-    echo "✅ $module done"
-  else
-    echo "⚠️ Module $module not found"
-  fi
+    if bash "$DIR/modules/$module"; then
+        echo "✅ $module OK"
+        SUCCESS+=("$module")
+    else
+        echo "❌ $module FAILED"
+        FAILED+=("$module")
+    fi
 }
 
-# run all modules in order
-for module in $(ls "$DIR/modules" | sort); do
-  run_module "$module"
+run_module 00_base.sh
+run_module 10_locale.sh
+run_module 20_docker.sh
+run_module 30_hibernate.sh
+run_module 40_dev.sh
+run_module 50_zsh.sh
+
+echo ""
+echo "========================="
+echo "📊 SUMMARY"
+echo "========================="
+
+echo "✅ SUCCESS:"
+for m in "${SUCCESS[@]}"; do
+    echo "  - $m"
 done
 
-echo "✅ ALL DONE!"
+echo ""
+
+if [ ${#FAILED[@]} -ne 0 ]; then
+    echo "❌ FAILED:"
+    for m in "${FAILED[@]}"; do
+        echo "  - $m"
+    done
+else
+    echo "🎉 ALL MODULES SUCCESSFUL"
+fi
+
+echo ""
 echo "🔁 Reboot recommended"
