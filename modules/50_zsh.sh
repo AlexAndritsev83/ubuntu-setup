@@ -17,10 +17,12 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/p
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting || true
 
 # safe config update
-if ! grep -q "zsh-autosuggestions" ~/.zshrc; then
-  sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
-fi
+if [[ -f ~/.zshrc ]]; then
+  if ! grep -q "zsh-autosuggestions" ~/.zshrc; then
+    sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+  fi
 
-sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc || true
+  sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc || true
+fi
 
 echo "⚠️ Run manually if needed: chsh -s $(which zsh)"
