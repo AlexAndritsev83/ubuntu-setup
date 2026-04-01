@@ -117,15 +117,25 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 EOF
 
 # -------------------------
-# POWERLEVEL10K FIX
+# POWERLEVEL10K CONFIG
 # -------------------------
-if [ -f ~/.p10k.zsh ]; then
-    sed -i 's/POWERLEVEL9K_TRANSIENT_PROMPT=.*/POWERLEVEL9K_TRANSIENT_PROMPT=off/' ~/.p10k.zsh
-fi
+echo "[THEME] Applying p10k config..."
 
-# -------------------------
-# DONE
-# -------------------------
-echo ""
-echo "[THEME] ✅ ULTRA TERMINAL READY"
-echo "👉 Restart terminal or run: exec zsh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+P10K_SOURCE="$PROJECT_ROOT/templates/.p10k.zsh"
+P10K_TARGET="$HOME/.p10k.zsh"
+
+if [ -f "$P10K_SOURCE" ]; then
+    echo "[P10K] Found template, applying..."
+
+    # backup якщо вже існує
+    if [ -f "$P10K_TARGET" ]; then
+        cp "$P10K_TARGET" "$P10K_TARGET.bak.$(date +%s)"
+    fi
+
+    cp "$P10K_SOURCE" "$P10K_TARGET"
+else
+    echo "[P10K] Template not found, skipping"
+fi
