@@ -51,3 +51,8 @@ fi
 
 echo ""
 echo "🔁 Reboot recommended"
+
+read -p "Reload shell now? (y/n): " ans
+if [ "$ans" = "y" ]; then
+    exec zsh
+fi
