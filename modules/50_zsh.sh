@@ -90,5 +90,10 @@ if [[ "$SHELL" != "$(which zsh)" ]]; then
     chsh -s "$(which zsh)"
 fi
 
-echo "[ZSH] Setup DONE"
-echo "👉 Restart terminal or run: exec zsh"
+# -------------------------
+# auto-switch to zsh (якщо зараз bash)
+# -------------------------
+if [[ -z "$ZSH_VERSION" ]]; then
+    echo "[ZSH] Switching to zsh..."
+    exec zsh
+fi
