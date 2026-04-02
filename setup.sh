@@ -20,6 +20,11 @@ run_module() {
     fi
 }
 
+ENABLE_THEME=false
+if [ "$ENABLE_THEME" = true ]; then
+  run_module 60_theme.sh
+fi
+
 run_module 00_base.sh
 run_module 10_locale.sh
 run_module 20_docker.sh
@@ -33,26 +38,16 @@ echo "========================="
 echo "📊 SUMMARY"
 echo "========================="
 
+echo ""
 echo "✅ SUCCESS:"
 for m in "${SUCCESS[@]}"; do
-    echo "  - $m"
+  echo "  - $m"
 done
 
 echo ""
-
-if [ ${#FAILED[@]} -ne 0 ]; then
-    echo "❌ FAILED:"
-    for m in "${FAILED[@]}"; do
-        echo "  - $m"
-    done
-else
-    echo "🎉 ALL MODULES SUCCESSFUL"
-fi
+echo "❌ FAILED:"
+for m in "${FAILED[@]}"; do
+  echo "  - $m"
+done
 
 echo ""
-echo "🔁 Reboot recommended"
-
-read -p "Reload shell now? (y/n): " ans
-if [ "$ans" = "y" ]; then
-    exec zsh
-fi
