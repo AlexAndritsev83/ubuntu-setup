@@ -20,10 +20,9 @@ run_module() {
     fi
 }
 
-ENABLE_THEME=false
-if [ "$ENABLE_THEME" = true ]; then
-  run_module 60_theme.sh
-fi
+# =========================
+# CORE SETUP
+# =========================
 
 run_module 00_base.sh
 run_module 10_locale.sh
@@ -31,7 +30,20 @@ run_module 20_docker.sh
 run_module 30_hibernate.sh
 run_module 40_dev.sh
 run_module 50_zsh.sh
-#run_module 60_theme.sh
+
+# =========================
+# OPTIONAL MODULES
+# =========================
+
+ENABLE_THEME=${ENABLE_THEME:-false}
+
+if [ "$ENABLE_THEME" = true ]; then
+    run_module 60_theme.sh
+fi
+
+# =========================
+# SUMMARY
+# =========================
 
 echo ""
 echo "========================="
