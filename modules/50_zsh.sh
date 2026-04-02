@@ -93,7 +93,7 @@ fi
 # -------------------------
 # auto-switch to zsh (якщо зараз bash)
 # -------------------------
-if [[ -z "$ZSH_VERSION" ]]; then
-    echo "[ZSH] Switching to zsh..."
-    exec zsh
-fi
+#if [[ -z "$ZSH_VERSION" ]]; then
+#   echo "[ZSH] Switching to zsh..."
+#    exec zsh
+#fi
